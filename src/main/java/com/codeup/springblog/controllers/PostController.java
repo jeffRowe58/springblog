@@ -1,30 +1,28 @@
 package com.codeup.springblog.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PostController {
     @GetMapping("/posts")
     @ResponseBody
-    public String post(){
+    public String viewPosts(){
         return "blog insert";
     }
     @GetMapping("/posts/{id}")
     @ResponseBody
-    public int postID(@PathVariable int id){
-        return id;
+    public String singlePost(@PathVariable long id){
+        return "View one post";
     }
     @GetMapping("/posts/create")
     @ResponseBody
-    public String postGetCreate(){
-        return "Holding for get creation";
+    public String createForm(){
+        return "view form to create post";
     }
-    @GetMapping("/posts/create")
+    @RequestMapping(value = "/posts/create", method = RequestMethod.POST)
     @ResponseBody
-    public String postPostCreate(){
-        return "Placeholder";
+    public String createPost(){
+        return "Creates new post";
     }
 }

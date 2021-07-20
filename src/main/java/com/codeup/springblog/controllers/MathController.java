@@ -7,24 +7,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MathController {
-    @GetMapping("/add/{x}/and/{y}")
+    @GetMapping("/{sign}/{x}/and/{y}")
     @ResponseBody
-    public int addMethod(@PathVariable int x, @PathVariable int y){
-        return x + y;
-    }
-    @GetMapping("/subtract/{x}/and/{y}")
-    @ResponseBody
-    public int subtractMethod(@PathVariable int x, @PathVariable int y){
-        return x - y;
-    }
-    @GetMapping("/multiply/{x}/and/{y}")
-    @ResponseBody
-    public int productMethod(@PathVariable int x, @PathVariable int y){
-        return x * y;
-    }
-    @GetMapping("/divide/{x}/and/{y}")
-    @ResponseBody
-    public int divideMethod(@PathVariable int x, @PathVariable int y){
-        return x / y;
+    public String mathMethod(@PathVariable String sign, @PathVariable int x, @PathVariable int y) {
+        int res = 0;
+        switch (sign) {
+            case "add":
+                res = x + y;
+                break;
+            case "subtract":
+                res = x - y;
+                break;
+            case "multiply":
+                res = x * y;
+                break;
+            case "divide":
+                res = x / y;
+                break;
+        }
+        return String.valueOf(res);
     }
 }
+
