@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Guessing Game</title>
+    </head>
+    <body>
+        <div class="d-flex">
+            <a th:href="@{/roll-dice/1}" th:name="die" role="button">1</a>
+            <a th:href="@{/roll-dice/2}" th:name="die" role="button">2</a>
+            <a th:href="@{/roll-dice/3}" th:name="die" role="button">3</a>
+            <a th:href="@{/roll-dice/4}" th:name="die" role="button">4</a>
+            <a th:href="@{/roll-dice/5}" th:name="die" role="button">5</a>
+            <a th:href="@{/roll-dice/6}" th:name="die" role="button">6</a>
+        </div>
+        <p></p>
+    </body>
+</html>
