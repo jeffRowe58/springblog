@@ -1,11 +1,10 @@
 package com.codeup.springblog.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class Roll_DiceController {
@@ -14,18 +13,20 @@ public class Roll_DiceController {
         return "roll-dice";
     }
 
-    @GetMapping("/roll-dice/${num}")
-    @ResponseBody
-    public String numberGuess (@PathVariable int num){
-        int randomNum = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        if(num == randomNum){
-            String rightGuess = "<h1>You guess correct</h1>";
-            return rightGuess;
-        }else{
-            String wrongGuess = "<h1>You guessed " + String.valueOf(num) + " the correct number was " + String.valueOf(randomNum) + ". Please try again.</h1>";
-            return wrongGuess;
-        }
+    @GetMapping(value ="/roll-dice/{num}")
+    public String numberGuess (@PathVariable int num, Model model){
+        int randomNum = (int) (Math.random() * ((6-1) + 1) +1);
 
+        model.addAttribute("num", "This is your " + num);
+        model.addAttribute("random", randomNum);
+        model.addAttribute("correct", num == randomNum);
+
+        if(num == randomNum){
+            model.addAttribute("rightGuess", "You guessed " + num + " and that was correct");
+        }else{
+            model.addAttribute("wrongGuess", "You guessed " + num + " the correct number was " + randomNum + ". Please try again.");
+        }
+        return "roll-dice";
     }
 
 }

@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
+    <head th:replace="partials/styles :: styles">
         <meta charset="UTF-8">
         <title>Guessing Game</title>
     </head>
     <body>
-        <div class="d-flex">
-            <a th:href="@{/roll-dice/1}" th:name="die" role="button">1</a>
-            <a th:href="@{/roll-dice/2}" th:name="die" role="button">2</a>
-            <a th:href="@{/roll-dice/3}" th:name="die" role="button">3</a>
-            <a th:href="@{/roll-dice/4}" th:name="die" role="button">4</a>
-            <a th:href="@{/roll-dice/5}" th:name="die" role="button">5</a>
-            <a th:href="@{/roll-dice/6}" th:name="die" role="button">6</a>
+    <nav th:replace="partials/navbar :: styles"></nav>
+        <div>
+            <h2 class="text-center headLine">Guess A Number</h2>
+            <form action="/roll-dice" method="get" class="d-flex justify-content-center">
+                <h3><a class="m-2" th:href="@{/roll-dice/1}" role="button">1</a></h3>
+                <h3><a class="m-2" th:href="@{/roll-dice/2}" role="button">2</a></h3>
+                <h3><a class="m-2" th:href="@{/roll-dice/3}" role="button">3</a></h3>
+                <h3><a class="m-2" th:href="@{/roll-dice/4}" role="button">4</a></h3>
+                <h3><a class="m-2" th:href="@{/roll-dice/5}" role="button">5</a></h3>
+                <h3><a class="m-2" th:href="@{/roll-dice/6}" role="button">6</a></h3><br>
+            </form>
+            <div th:if${correct}>
+                <h5><p class="text-center" th:text="${rightGuess}"></p></h5>
+                <h5><p class="text-center" th:text="${wrongGuess}"></p></h5>
+            </div>
         </div>
-        <p></p>
+        <footer th:replace="partials/footer :: footer"></footer>
+        <div th:replace="partials/scripts :: scripts"></div>
     </body>
 </html>

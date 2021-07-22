@@ -1,19 +1,26 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.models.Post;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PostController {
     @GetMapping("/posts")
-    @ResponseBody
-    public String viewPosts(){
-        return "blog insert";
+    public String viewPosts(Model model){
+        List<Post> posts = new ArrayList<>();
+        model.addAttribute("posts", posts);
+        return "posts";
     }
     @GetMapping("/posts/{id}")
-    @ResponseBody
-    public String singlePost(@PathVariable long id){
-        return "View one post";
+    public String singlePost(@PathVariable long id, Model model){
+        Post post = new Post();
+        model.addAttribute("post", post);
+        return "post";
     }
     @GetMapping("/posts/create")
     @ResponseBody
