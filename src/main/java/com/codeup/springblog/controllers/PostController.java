@@ -20,9 +20,8 @@ public class PostController {
 
     @GetMapping("/posts")
     public String viewPosts(Model model){
-        List<Post> posts = new ArrayList<>();
-        posts.add(new Post("This is post1", "This is post1s body"));
-        posts.add(new Post("This is post2", "This is post2s body"));
+        List<Post> posts = postDao.findAll();
+
         model.addAttribute("posts", posts);
         return "posts/index";
 
@@ -44,12 +43,28 @@ public class PostController {
         return "Creates new post";
     }
 
-    @PostMapping("/posts/index/edit")
-    public String editPost(Model model){
-        return null;
+    @GetMapping("/posts/{id}/edit")
+    public String editGet(@PathVariable long id, Model model){
+        model.addAttribute("editPost", postDao.findById(id));
+        return "posts/edit";
     }
-    @PostMapping("/posts/index/delete")
-    public String deletePost(Model model){
 
+    @PostMapping("/posts/{id}/edit")
+    public String editPost(@PathVariable long id, @RequestParam(name = "title") String title, @RequestParam(name = "body") String body){
+        Post editPost = postDao.getById(id);
+        editPost.setTitle(title);
+        editPost.setBody(body);
+        postDao.save(editPost);
+        return "redirect:/posts";
+    }
+    @GetMapping("/posts/{id}/show")
+    public String showEdit (@PathVariable long id, Model model){
+        model.addAttribute("showEditId", id);
+        return "redirect:/posts/{id}/show";
+    }
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id, Model model){
+        postDao.deleteById(id);
+        return "redirect:/posts";
     }
 }

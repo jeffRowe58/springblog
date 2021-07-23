@@ -15,6 +15,14 @@ public class Post {
     @Column(nullable = false, length = 155)
     private String body;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public Post (long id, String title, String body){
         this.id = id;
         this.title = title;

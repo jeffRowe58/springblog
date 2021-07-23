@@ -9,4 +9,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("from Post a where a.title like %:term%")
     Post findByTitle(String term);
+
+    void deleteById(long id);
 }
