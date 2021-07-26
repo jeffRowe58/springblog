@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="partials/styles :: styles">
+        <meta charset="UTF-8">
+        <title>Welcome</title>
+    </head>
+    <body>
+        <nav th:replace="partials/navbar :: styles"></nav>
+
+        <form action="/posts/create" method="post">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input id="title" name="title" class="form-control" type="text">
+            </div>
+            <div class="form-group">
+                <label for="body">Body</label>
+                <textarea id="body" name="body" class="form-control" type="text"></textarea>
+            </div>
+            <input type="submit" class="btn btn-block btn-primary">
+        </form>
+
+        <footer th:replace="partials/footer :: footer"></footer>
+    </body>
+</html>

@@ -2,6 +2,8 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
 import com.codeup.springblog.models.PostRepository;
+import com.codeup.springblog.models.User;
+import com.codeup.springblog.models.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,11 @@ public class PostController {
 
     private final PostRepository postDao;
 
-    public PostController(PostRepository postDao){
+    private final UserRepository userDao;
+
+    public PostController(PostRepository postDao, UserRepository userDao){
         this.postDao = postDao;
+        this.userDao = userDao;
     }
 
     @GetMapping("/posts")
@@ -28,19 +33,25 @@ public class PostController {
     }
     @GetMapping("/posts/{id}")
     public String singlePost(@PathVariable long id, Model model){
-        Post post = new Post("Jeff buys bicycle", "No one knows why.");
-        model.addAttribute("post", post);
+        model.addAttribute("post", postDao.findById(id));
         return "posts/show";
     }
-    @GetMapping("/posts/create")
-    @ResponseBody
+
+
+
+    @GetMapping(value = "/posts/create")
     public String createForm(){
-        return "view form to create post";
+
+        return "/posts/create";
     }
+
     @RequestMapping(value = "/posts/create", method = RequestMethod.POST)
-    @ResponseBody
-    public String createPost(){
-        return "Creates new post";
+    public String createPost(@RequestParam String title, @RequestParam String body){
+        User user = userDao.findById(1L);
+        Post post = new Post(title, body, user);
+        postDao.save(post);
+
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/{id}/edit")
@@ -57,11 +68,13 @@ public class PostController {
         postDao.save(editPost);
         return "redirect:/posts";
     }
+
     @GetMapping("/posts/{id}/show")
     public String showEdit (@PathVariable long id, Model model){
         model.addAttribute("showEditId", id);
         return "redirect:/posts/{id}/show";
     }
+
     @PostMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable long id, Model model){
         postDao.deleteById(id);

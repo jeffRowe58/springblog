@@ -9,7 +9,10 @@
 <div>
     <h3 th:text="${ad.title}"></h3>
     <p th:text="${ad.description}"></p>
-
+    <p th:text="${ad.user.username}"></p>
+    <span th:each="cat : ${ad.categories}">
+        <span th:text="${cat.name}"></span>
+    </span>
 </div>
 <footer th:replace="partials/footer :: footer"></footer>
 </body>
