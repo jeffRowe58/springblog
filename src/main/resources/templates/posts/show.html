@@ -11,10 +11,10 @@
             <h5 th:text="${post.body}"></h5>
             <h5 th:text="${post.user.email}"></h5>
             <div class="container d-flex justify-content-center align-items-center border border-dark">
-                <form action="show/edit" method="post">
+                <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="get">
                     <button class="m-2" type="submit" name="editBtn" value="edit">Edit</button>
                 </form>
-                <form action="show/delete" method="post">
+                <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
                     <button class="m-2" type="submit" name="deleteBtn" value="delete">Delete</button>
                 </form>
             </div>
