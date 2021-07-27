@@ -6,21 +6,11 @@
     </head>
     <body>
         <nav th:replace="partials/navbar :: styles"></nav>
-        <div th:each="post : ${posts}">
+        <th:block th:each="post : ${posts}">
             <div class="card w-25 m-5">
-                <h3 th:text="${post.title}"></h3>
+                <a th:href="@{/posts/{id}(id = ${post.id})}"><h3 th:text="${post.title}"></h3></a>
                 <h5 th:text="${post.body}"></h5>
-                <div class="d-flex">
-                    <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="get">
-                        <input type="hidden" name="postId" value="${post.id}">
-                        <button class="m-2" type="submit" name="editBtn" value="edit">Edit</button>
-                    </form>
-                    <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
-                        <input type="hidden" name="postId" value="${post.id}">
-                        <button class="m-2" type="submit" name="deleteBtn" value="delete">Delete</button>
-                    </form>
-                </div>
             </div>
-        </div>
+        </th:block>
     </body>
 </html>

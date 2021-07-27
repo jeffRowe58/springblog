@@ -6,10 +6,11 @@
     </head>
     <body>
         <nav th:replace="partials/navbar :: styles"></nav>
-        <div>
-        <h3 th:text="${post.title}"></h3>
+        <div class="d-flex flex-column justify-content-center align-items-center border border-dark w-25">
+            <h3 class="w-100 bg-primary text-center" th:text="${post.title}"></h3>
             <h5 th:text="${post.body}"></h5>
-            <div class="container d-flex">
+            <h5 th:text="${post.user.email}"></h5>
+            <div class="container d-flex justify-content-center align-items-center border border-dark">
                 <form action="show/edit" method="post">
                     <button class="m-2" type="submit" name="editBtn" value="edit">Edit</button>
                 </form>
