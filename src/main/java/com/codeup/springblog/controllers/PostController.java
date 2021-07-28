@@ -54,7 +54,7 @@ public class PostController {
         User user = userDao.getById(1L);
         Post post = new Post(title, body, user);
         postDao.save(post);
-        emailSvc.prepareAndSend("Your Post has been created", "Your post titled '" + title + "' has been create. Thanks for using our services", user.getEmail());
+        emailSvc.prepareAndSend(post,"Your Post has been created", "Your post titled '" + title + "' has been create. Thanks for using our services", user.getEmail());
         return "redirect:/posts";
     }
 
