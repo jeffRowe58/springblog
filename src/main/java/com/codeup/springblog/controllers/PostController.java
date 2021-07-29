@@ -1,15 +1,15 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
-import com.codeup.springblog.models.PostRepository;
+import com.codeup.springblog.repository.PostRepository;
 import com.codeup.springblog.models.User;
-import com.codeup.springblog.models.UserRepository;
+import com.codeup.springblog.repository.UserRepository;
 import com.codeup.springblog.services.EmailService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,7 +37,14 @@ public class PostController {
     }
     @GetMapping("/posts/{id}")
     public String singlePost(@PathVariable long id, Model model){
+        Post post = postDao.getById(id);
+        Boolean isPostOwner = false;
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() != "anonymousUser"){
+            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            isPostOwner = currentUser.getId() == post.getUser().getId();
+        }
         model.addAttribute("post", postDao.findById(id));
+        model.addAttribute("isPostOwner", isPostOwner);
         return "posts/show";
     }
 
@@ -51,7 +58,8 @@ public class PostController {
 
     @RequestMapping(value = "/posts/create", method = RequestMethod.POST)
     public String createPost(@RequestParam String title, @RequestParam String body){
-        User user = userDao.getById(1L);
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDao.getById(currentUser.getId());
         Post post = new Post(title, body, user);
         postDao.save(post);
         emailSvc.prepareAndSend(post,"Your Post has been created", "Your post titled '" + title + "' has been create. Thanks for using our services", user.getEmail());
@@ -60,8 +68,14 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     public String editGet(@PathVariable long id, Model model){
-        model.addAttribute("editPost", postDao.findById(id));
-        return "posts/edit";
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = postDao.getById(id);
+        if(currentUser.getId() == post.getUser().getId()){
+            model.addAttribute("post", post);
+            return "/posts/edit";
+        }else {
+            return "redirect:/posts/" + id;
+        }
     }
 
     @PostMapping("/posts/{id}/edit")
@@ -81,7 +95,12 @@ public class PostController {
 
     @PostMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable long id, Model model){
-        postDao.deleteById(id);
-        return "redirect:/posts";
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = postDao.getById(id);
+        if(currentUser.getId() == post.getUser().getId()){
+            postDao.deleteById(id);
+            return "redirect:/posts";
+        }else
+            return "redirect:/posts/" + id;
     }
 }

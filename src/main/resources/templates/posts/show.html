@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head th:replace="partials/styles :: styles">
         <meta charset="UTF-8">
         <title>Welcome</title>
@@ -10,13 +10,17 @@
             <h3 class="w-100 bg-primary text-center" th:text="${post.title}"></h3>
             <h5 th:text="${post.body}"></h5>
             <h5 th:text="${post.user.email}"></h5>
-            <div class="container d-flex justify-content-center align-items-center border border-dark">
-                <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="get">
-                    <button class="m-2" type="submit" name="editBtn" value="edit">Edit</button>
-                </form>
-                <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
-                    <button class="m-2" type="submit" name="deleteBtn" value="delete">Delete</button>
-                </form>
+
+            <div th:if="${isPostOwner}" class="w-100">
+
+                <div class="container d-flex justify-content-center align-items-center border border-dark w-100">
+                    <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="get">
+                        <button class="m-2" type="submit" name="editBtn" value="edit">Edit</button>
+                    </form>
+                    <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post">
+                        <button class="m-2" type="submit" name="deleteBtn" value="delete">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     </body>

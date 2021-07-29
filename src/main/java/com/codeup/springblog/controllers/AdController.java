@@ -1,15 +1,12 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Ad;
-import com.codeup.springblog.models.AdRepository;
-import com.codeup.springblog.models.UserRepository;
+import com.codeup.springblog.repository.AdRepository;
+import com.codeup.springblog.repository.UserRepository;
 import com.codeup.springblog.services.EmailService;
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Controller
 public class AdController {
