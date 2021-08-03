@@ -26,6 +26,12 @@ public class Ad {
         this.categories = categories;
     }
 
+    public Ad(String title, String description, User user){
+        this.title = title;
+        this.description = description;
+        this.user = user;
+    }
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;

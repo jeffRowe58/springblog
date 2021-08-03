@@ -1,7 +1,7 @@
 import com.codeup.springblog.SpringblogApplication;
-import com.codeup.springblog.models.Post;
+import com.codeup.springblog.models.Ad;
 import com.codeup.springblog.models.User;
-import com.codeup.springblog.repository.PostRepository;
+import com.codeup.springblog.repository.AdRepository;
 import com.codeup.springblog.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringblogApplication.class)
 @AutoConfigureMockMvc
-public class PostsIntegrationTests {
+public class AdsIntegrationTests {
 
     private User testUser;
     private HttpSession httpSession;
@@ -38,7 +38,7 @@ public class PostsIntegrationTests {
     UserRepository userDao;
 
     @Autowired
-    PostRepository postDao;
+    AdRepository adDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -79,78 +79,78 @@ public class PostsIntegrationTests {
         assertNotNull(httpSession);
     }
     @Test
-    public void testCreatePost() throws Exception {
+    public void testCreateAd() throws Exception {
         // Makes a Post request to /posts/create and expect a redirection to the Post
         this.mvc.perform(
-                        post("/posts/create").with(csrf())
+                        post("/ads/create").with(csrf())
                                 .session((MockHttpSession) httpSession)
                                 // Add all the required parameters to your request like this
                                 .param("title", "test")
-                                .param("body", "for sale"))
+                                .param("description", "for sale"))
                 .andExpect(status().is3xxRedirection());
     }
     @Test
-    public void testShowPost() throws Exception {
+    public void testShowAd() throws Exception {
 
-        Post existingPost = postDao.findAll().get(0);
+        Ad existingAd = adDao.findAll().get(0);
 
         // Makes a Get request to /posts/{id} and expect a redirection to the Post show page
-        this.mvc.perform(get("/posts/" + existingPost.getId()))
+        this.mvc.perform(get("/ads/" + existingAd.getId()))
                 .andExpect(status().isOk())
                 // Test the dynamic content of the page
-                .andExpect(content().string(containsString(existingPost.getBody())));
+                .andExpect(content().string(containsString(existingAd.getDescription())));
     }
 
     @Test
-    public void testPostsIndex() throws Exception {
-        Post existingPost = postDao.findAll().get(0);
+    public void testAdsIndex() throws Exception {
+        Ad existingAd = adDao.findAll().get(0);
 
         // Makes a Get request to /posts and verifies that we get some of the static text of the posts/index.html template and at least the title from the first Post is present in the template.
-        this.mvc.perform(get("/posts"))
+        this.mvc.perform(get("/ads"))
                 .andExpect(status().isOk())
                 // Test the static content of the page
                 .andExpect(content().string(containsString("edited title")))
                 // Test the dynamic content of the page
-                .andExpect(content().string(containsString(existingPost.getTitle())));
+                .andExpect(content().string(containsString(existingAd.getTitle())));
     }
     @Test
-    public void testEditPost() throws Exception {
+    public void testEditAd() throws Exception {
         // Gets the first Ad for tests purposes
-        Post existingPost = postDao.findAll().get(0);
+        Ad existingAd = adDao.findAll().get(0);
 
         // Makes a Post request to /posts/{id}/edit and expect a redirection to the Post show page
         this.mvc.perform(
-                        post("/posts/" + existingPost.getId() + "/edit").with(csrf())
+                        post("/ads/" + existingAd.getId() + "/edit").with(csrf())
                                 .session((MockHttpSession) httpSession)
                                 .param("title", "edited title")
-                                .param("body", "edited body"))
+                                .param("description", "edited body"))
                 .andExpect(status().is3xxRedirection());
 
         // Makes a GET request to /posts/{id} and expect a redirection to the Post show page
-        this.mvc.perform(get("/posts/" + existingPost.getId()))
+        this.mvc.perform(get("/ads/" + existingAd.getId()))
                 .andExpect(status().isOk())
                 // Test the dynamic content of the page
                 .andExpect(content().string(containsString("edited title")))
-                .andExpect(content().string(containsString("edited body")));
+                .andExpect(content().string(containsString("edited description")));
     }
     @Test
-    public void testDeletePost() throws Exception {
+    public void testDeleteAd() throws Exception {
         // Creates a test Post to be deleted
         this.mvc.perform(
-                        post("/posts/create").with(csrf())
+                        post("/ads/create").with(csrf())
                                 .session((MockHttpSession) httpSession)
                                 .param("title", "post to be deleted")
-                                .param("body", "won't last long"))
+                                .param("description", "won't last long"))
                 .andExpect(status().is3xxRedirection());
 
         // Get the recent Post that matches the title
-        Post existingPost = postDao.findByTitle("post to be deleted");
+        Ad existingAd = adDao.findByTitle("post to be deleted");
 
         // Makes a Post request to /posts/{id}/delete and expect a redirection to the Post index
         this.mvc.perform(
-                        post("/posts/" + existingPost.getId() + "/delete").with(csrf())
+                        post("/posts/" + existingAd.getId() + "/delete").with(csrf())
                                 .session((MockHttpSession) httpSession)
-                                .param("id", String.valueOf(existingPost.getId())))
+                                .param("id", String.valueOf(existingAd.getId())))
                 .andExpect(status().is3xxRedirection());
     }
 }
