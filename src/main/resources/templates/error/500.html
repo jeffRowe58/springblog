@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="partials/styles :: styles">
+    <meta charset="UTF-8">
+    <title th:text="'Oooops, ' + ${error}"></title>
+</head>
+<body>
+<nav th:replace="partials/navbar :: styles"></nav>
+<h1 th:text="'You landed yourself a ' + ${error}"></h1>
+    <img src="../../static/uploads/500error.jpeg" height="539" width="430" alt="500"/>
+<footer th:replace="partials/footer :: footer"></footer>
+</body>
+</html>

@@ -7,6 +7,7 @@
     <body>
         <nav th:replace="partials/navbar :: styles"></nav>
         <div class="d-flex flex-column justify-content-center align-items-center border border-dark w-25">
+            <img th:src="@{${post.filePath}}" alt="No Photo For You">
             <h3 class="w-100 bg-primary text-center" th:text="${post.title}"></h3>
             <h5 th:text="${post.body}"></h5>
             <h5 th:text="${post.user.email}"></h5>
